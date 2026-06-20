@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Whoops — Download</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Adds COOP/COEP so ffmpeg.wasm (SharedArrayBuffer) works on GitHub Pages. Free, no server. -->
+  <script src="coi-serviceworker.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="brand">
+      <div class="brand__mark" aria-hidden="true">♪</div>
+      <span class="brand__name">Whoops</span>
+    </header>
+
+    <!-- Track card -->
+    <section class="card" id="track" hidden>
+      <!-- Hero: art doubles as a play/pause preview button -->
+      <button class="hero" id="hero" type="button" aria-label="Play preview">
+        <span class="hero__art" id="art" aria-hidden="true">♪</span>
+        <span class="hero__play" id="heroIcon" aria-hidden="true">▶</span>
+      </button>
+
+      <div class="meta">
+        <h1 class="meta__title" id="title">Unknown track</h1>
+        <p class="meta__source" id="source">—</p>
+        <div class="chips" id="chips">
+          <span class="chip" id="chipFormat">—</span>
+          <span class="chip" id="chipDur" hidden>0:00</span>
+          <span class="chip" id="chipSize" hidden>— MB</span>
+        </div>
+      </div>
+
+      <!-- Scrubber (visible once preview starts) -->
+      <div class="player" id="player" hidden>
+        <span class="player__t" id="cur">0:00</span>
+        <input class="player__seek" id="seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek" />
+        <span class="player__t" id="dur">0:00</span>
+      </div>
+
+      <!-- Primary action -->
+      <button class="btn btn--primary" id="download">
+        <span class="btn__icon">⤓</span>
+        <span id="downloadLabel">Download</span>
+      </button>
+
+      <!-- Secondary actions -->
+      <div class="row2">
+        <button class="btn btn--ghost" id="share"><span class="btn__icon">⤴</span> Share</button>
+        <button class="btn btn--ghost" id="copy"><span class="btn__icon">⧉</span> Copy link</button>
+      </div>
+
+      <!-- Convert -->
+      <details class="convert" id="convertBox">
+        <summary>Convert to another format</summary>
+        <div class="convert__row" id="convertRow"><!-- chips injected --></div>
+        <div class="bar" id="bar" hidden><span></span></div>
+        <p class="convert__note">Runs on your device. Re-encoding doesn't add quality — it's for compatibility (e.g. WAV for editing).</p>
+      </details>
+
+      <p class="hint">Tap <strong>Download</strong>, then choose <strong>Save to Files</strong> to keep it on your iPhone.</p>
+    </section>
+
+    <!-- Empty / error state -->
+    <section class="card card--empty" id="empty">
+      <div class="empty__icon" aria-hidden="true">⤓</div>
+      <h1 class="empty__title">No track in this link</h1>
+      <p class="empty__body">Open this page by scanning a QR code from the Whoops Chrome extension.</p>
+    </section>
+
+    <footer class="foot">
+      <p>Runs entirely on your device. Only grab audio you have the right to download.</p>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <audio id="audio" preload="metadata" crossorigin="anonymous"></audio>
+  <script src="app.js"></script>
+</body>
+</html>
